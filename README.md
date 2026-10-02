@@ -37,12 +37,7 @@ Fonts (Google Fonts) load from the internet. Offline, the page falls back to sys
 
 ## Deploy
 
-Rename `portfolio.html` to `index.html`, then upload it to any static host:
-
-- **Netlify:** drag and drop the file at app.netlify.com/drop
-- **Vercel:** import the folder as a static project
-- **GitHub Pages:** push to a repository and enable Pages in the repository settings
-- **Any hosting (cPanel etc.):** upload `index.html` to `public_html`
+Deplying on Vercel
 
 ## Notes
 
