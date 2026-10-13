@@ -149,3 +149,65 @@ footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
       </div>
       <div class="card">
         <h3>Business websites</h3>
+<div class="card">
+  <h3>Custom development</h3>
+  <p>Web apps, dashboards, integrations and features that off-the-shelf plugins can't do.</p>
+  
+  <!-- Interactive Contact Picker Demo Component -->
+  <div style="margin-top: 20px; padding-top: 15px; border-top: 1px dashed var(--line);">
+    <button id="pick-contacts-btn" class="btn" style="padding: 8px 16px; font-size: 14px; width: 100%;">
+      ⚡ Try Contact Picker API
+    </button>
+    <div id="contact-picker-output" style="margin-top: 12px; font-size: 14px; color: var(--muted); text-align: left; max-height: 150px; overflow-y: auto;"></div>
+  </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const contactBtn = document.getElementById('pick-contacts-btn');
+  const contactOutput = document.getElementById('contact-picker-output');
+
+  if (!contactBtn || !contactOutput) return;
+
+  contactBtn.addEventListener('click', async () => {
+    // 1. Feature Detection
+    const isSupported = 'contacts' in navigator && 'ContactsManager' in window;
+    
+    if (!isSupported) {
+      contactOutput.innerHTML = '❌ Not supported on this browser/OS. (Try Chrome or Edge on Android!)';
+      return;
+    }
+
+    // 2. Request configuration
+    const fields = ['name', 'tel'];
+    const options = { multiple: false }; // Set to true if you want to allow picking multiple
+
+    try {
+      contactOutput.innerHTML = '<i>Opening native picker...</i>';
+      
+      // 3. Launch native system sheet
+      const contacts = await navigator.contacts.select(fields, options);
+      
+      if (contacts.length === 0) {
+        contactOutput.innerHTML = '⚠️ No contact selected.';
+        return;
+      }
+
+      // 4. Print single selection securely
+      const contact = contacts[0];
+      const name = contact.name ? contact.name.join(', ') : 'No Name';
+      const phone = contact.tel ? contact.tel.join(', ') : 'No Phone Number';
+
+      contactOutput.innerHTML = `
+        <div style="background: var(--bg); padding: 10px; border-radius: 8px; border: 1px solid var(--line);">
+          <strong>👤 Selected:</strong> ${name}<br>
+          <strong>📞 Phone:</strong> ${phone}
+        </div>
+      `;
+
+    } catch (error) {
+      // Handles user cancellation smoothly
+      contactOutput.innerHTML = `❌ Cancelled or failed: ${error.message}`;
+    }
+  });
+});
+</script>
